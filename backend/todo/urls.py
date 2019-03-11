@@ -7,7 +7,4 @@ router = routers.DefaultRouter()
 router.register(r'todos', TodoViewSet)
 router.register(r'categories', CategoryViewSet)
 
-# urlpatterns = [
-#     path('', include(router.urls))
-# ]
 urlpatterns = router.urls
