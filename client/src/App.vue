@@ -7,7 +7,12 @@
       :mini-variant="primaryDrawer.mini"
       absolute
       app
-    ></v-navigation-drawer>
+    >
+      <v-container fluid>
+        <CategoriesList/>
+        <AddCategory/>
+      </v-container>
+    </v-navigation-drawer>
     
     <v-toolbar :clipped-left="primaryDrawer.clipped" app absolute id="nav-toolbar">
       <v-toolbar-side-icon
@@ -29,10 +34,12 @@
 <script>
 
 import TodoList from './components/TodoList.vue'
+import AddCategory from './components/AddCategory.vue'
+import CategoriesList from './components/CategoriesList.vue'
 
 export default {
   components: {
-    TodoList,
+    TodoList, AddCategory, CategoriesList
   },
   data: () => ({
       dark: true,
@@ -71,6 +78,10 @@ export default {
 
 h1 {
 	text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $vue-headings;
 }
 
 </style>

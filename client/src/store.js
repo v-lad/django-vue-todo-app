@@ -10,12 +10,14 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    todos: [],  // список заметок
+    todos: [],
+    categories: [{category_name: "Main", id: 1}],
     nextTodoId: 1,
     todoText: "",
   },
   getters: {
     todos: state => state.todos,
+    categories: state => state.categories,
     todoText: state => state.todoText,
     nextTodoId: state => state.nextTodoId,
   },
