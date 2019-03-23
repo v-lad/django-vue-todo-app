@@ -110,3 +110,5 @@ src/app/config.py
 # JS
 node_modules/
 
+backend/static/admin/
+backend/static/rest_framework/

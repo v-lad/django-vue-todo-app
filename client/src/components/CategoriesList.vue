@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2>Categories</h2>
-    <ul v-if="categories">
+    <ul v-if="categories.length">
       <CategoryItem
         v-for="cat in categories"
-        :key="cat.item"
+        :key="cat.id"
         :category="cat"
       />
     </ul>
@@ -20,7 +20,7 @@ export default {
   computed: {
     categories: {
       get() {
-        return this.$store.getters.categories
+        return this.$store.getters.categories;
       },
     },
   },
@@ -28,5 +28,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+ul {
+  margin-bottom: 20px;
+}
 
 </style>

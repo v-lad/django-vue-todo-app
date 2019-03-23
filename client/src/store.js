@@ -1,9 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {
-  ADD_TODO,
-  SET_TODOS
-} from '../store/mutation-types.js'
 import { HTTP } from './api/common'
 
 Vue.use(Vuex)
@@ -14,30 +10,46 @@ const store = new Vuex.Store({
     categories: [{category_name: "Main", id: 1}],
     nextTodoId: 1,
     todoText: "",
+    categoryText: "",
+    nextCatId: 1,
   },
   getters: {
     todos: state => state.todos,
     categories: state => state.categories,
     todoText: state => state.todoText,
     nextTodoId: state => state.nextTodoId,
+    categoryText: state => state.categoryText,
+    nextCatId: state => state.nextCatId,
   },
   mutations: {
-    [ADD_TODO] (state, todo) {
+    addTodo (state, todo) {
       state.todos = [todo, ...state.todos];
       // console.log(state.todos)
     },
-    [SET_TODOS] (state, { results }) {
+    setTodos (state, { results }) {
       state.todos = results
     },
     changeTodoText(state, data) {
       state.todoText = data.newText;
     },
+    changeCategoryText(state, data) {
+      state.categoryText = data.newCat;
+    },
     clearTodoText(state) {
-      state.todoText = ""
+      state.todoText = "";
+    },
+    clearCategoryText(state) {
+      state.categoryText = "";
     },
     updateTodos(state, deleteTodoId) {
-      state.todos = state.todos.filter(todo => todo.id !== deleteTodoId)
+      state.todos = state.todos.filter(todo => todo.id !== deleteTodoId);
     },
+    addCategory(state, category) {
+      state.categories = [...state.categories, category];
+    },
+    removeCategory(state, catId) {
+      state.categories = state.categories.filter(cat => (cat.id !== catId))
+    }
   },
   actions: {
     createTodo ({ commit }, todoData) {
@@ -47,7 +59,7 @@ const store = new Vuex.Store({
         .then(r => r.data)
         .then(data => {
           console.log(data)
-          commit(ADD_TODO, data);
+          commit('addTodo', data);
           commit('clearTodoText');
         });
     },
@@ -56,7 +68,7 @@ const store = new Vuex.Store({
         .get('todos')
         .then(r => r.data)
         .then(data => {
-          commit(SET_TODOS, data);
+          commit('setTodos', data);
         })
     },
     deleteTodo({commit}, todoId) {
@@ -71,6 +83,17 @@ const store = new Vuex.Store({
     changeTodoText({commit}, newText) {
       commit('changeTodoText', {newText});
     },
+    changeCategoryText({commit}, newCat) {
+      commit('changeCategoryText', {newCat})
+    },
+    addCategory({commit}, category) {
+      // console.log(category)
+      commit('addCategory', category);
+      commit('clearCategoryText');
+    },
+    removeCategory({commit}, catId) {
+      commit('removeCategory', catId)
+    }
   }
 });
 
