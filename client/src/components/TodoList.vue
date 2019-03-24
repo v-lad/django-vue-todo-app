@@ -11,7 +11,7 @@
         :todo="todo"
       />
     </ul>
-    <p v-else>Nothing to do. You can add some above.</p>
+    <p v-else>No todos. You can add some above.</p>
   </div>
 </template>
 
@@ -28,11 +28,10 @@ export default {
   },
 
   async created() {
-    await this.getTodos()
+    await this.getTodos(this.$route.params.category ? Number(this.$route.params.category) : 1)
   },
 
   computed: {
-    ...mapGetters(['nextTodoId']),
     todos: {
       get() {
         return this.$store.getters.todos;

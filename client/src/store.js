@@ -1,33 +1,34 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { HTTP } from './api/common'
+import router from './router'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     todos: [],
-    categories: [{category_name: "Main", id: 1}],
-    nextTodoId: 1,
+    categories: [],
     todoText: "",
     categoryText: "",
-    nextCatId: 1,
+    currentCategory: null,
   },
   getters: {
     todos: state => state.todos,
     categories: state => state.categories,
     todoText: state => state.todoText,
-    nextTodoId: state => state.nextTodoId,
     categoryText: state => state.categoryText,
-    nextCatId: state => state.nextCatId,
+    currentCategory: state => state.currentCategory,
   },
   mutations: {
     addTodo (state, todo) {
       state.todos = [todo, ...state.todos];
-      // console.log(state.todos)
     },
-    setTodos (state, { results }) {
-      state.todos = results
+    setTodos (state, { todos }) {
+      state.todos = todos;
+    },
+    setCategoriesList (state, { results }) {
+      state.categories = results;
     },
     changeTodoText(state, data) {
       state.todoText = data.newText;
@@ -47,28 +48,33 @@ const store = new Vuex.Store({
     addCategory(state, category) {
       state.categories = [...state.categories, category];
     },
-    removeCategory(state, catId) {
+    updateCategories(state, catId) {
       state.categories = state.categories.filter(cat => (cat.id !== catId))
-    }
+    },
+    setCurrentCategory(state, { category_name }) {
+      state.currentCategory = category_name;
+    },
   },
   actions: {
     createTodo ({ commit }, todoData) {
-      console.log(todoData)      
+      // console.log(todoData)
       HTTP
         .post('/todos/', todoData)
         .then(r => r.data)
         .then(data => {
-          console.log(data)
+          // console.log(data)
           commit('addTodo', data);
           commit('clearTodoText');
         });
     },
-    async getTodos({commit}) {
+    async getTodos({commit}, catId) {
       await HTTP
-        .get('todos')
+        .get(`categories/${catId}`)
         .then(r => r.data)
         .then(data => {
+          console.log(data)
           commit('setTodos', data);
+          commit('setCurrentCategory', data);
         })
     },
     deleteTodo({commit}, todoId) {
@@ -86,15 +92,34 @@ const store = new Vuex.Store({
     changeCategoryText({commit}, newCat) {
       commit('changeCategoryText', {newCat})
     },
-    addCategory({commit}, category) {
-      // console.log(category)
-      commit('addCategory', category);
-      commit('clearCategoryText');
-    },
     removeCategory({commit}, catId) {
-      commit('removeCategory', catId)
-    }
-  }
+      HTTP
+        .delete(`categories/${catId}`)
+        .then(r => {
+          if (r.status === 204) {
+            commit('updateCategories', catId);
+            router.push({name: 'AnotherCat', params: {category: '1'}})
+          }
+        })
+    },
+    async getCategories({commit}) {
+      await HTTP
+        .get('categories')
+        .then(r => r.data)
+        .then(data => {
+          commit('setCategoriesList', data)
+      });
+    },
+    createCategory({commit}, catData) {
+      HTTP
+        .post('/categories/', catData)
+        .then(r => r.data)
+        .then(data => {
+          commit('addCategory', data);
+          commit('clearCategoryText');
+        });
+    },
+  },
 });
 
 export default store;

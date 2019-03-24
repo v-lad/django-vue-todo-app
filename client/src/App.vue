@@ -1,5 +1,6 @@
 <template>
   <v-app id="sandbox" :dark="dark">
+    <router-view></router-view>
     <v-navigation-drawer
       v-model="primaryDrawer.model"
       :clipped="primaryDrawer.clipped"
@@ -25,6 +26,7 @@
     <v-content>
       <v-container fluid>
         <h1>TODO</h1>
+        <p id="cat-name">{{ currentCategory }}</p>
         <TodoList/>
       </v-container>
     </v-content>
@@ -36,25 +38,37 @@
 import TodoList from './components/TodoList.vue'
 import AddCategory from './components/AddCategory.vue'
 import CategoriesList from './components/CategoriesList.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     TodoList, AddCategory, CategoriesList
   },
   data: () => ({
-      dark: true,
-      drawers: ['Default (no property)'],
-      primaryDrawer: {
-        model: false,
-        type: 'default (no property)',
-        clipped: true,
-        floating: false,
-        mini: false
-      },
-    }),
-    created() {
-      console.log(this.$store)
-    }
+    dark: true,
+    drawers: ['Default (no property)'],
+    primaryDrawer: {
+      model: false,
+      type: 'default (no property)',
+      clipped: true,
+      floating: false,
+      mini: false
+    },
+    // curCat: null,
+  }),
+  created() {
+    // console.log(this.$store)
+    // console.log(this.$router)
+    // this.curCat = this.$store.getters.currentCategory;
+  },
+  async beforeRouteUpdate(to, from, next) {
+    console.log(to.params);
+    await this.$store.dispatch('getTodos', to.params.category ? Number(to.params.category) : 1);
+    next();
+  },
+  computed: {
+    ...mapGetters(['currentCategory']),
+  }
 }
 </script>
 
@@ -76,7 +90,7 @@ export default {
   }
 }
 
-h1 {
+h1, #cat-name {
 	text-align: center;
 }
 
