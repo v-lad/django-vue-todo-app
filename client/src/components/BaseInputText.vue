@@ -28,7 +28,12 @@ export default {
     ...mapActions(['changeTodoText']),
     addTodo() {      
       const trimmedText = this.todoText.trim()
-      this.$store.dispatch('createTodo', {todo: trimmedText, category: 1})
+      this.$store.dispatch(
+        'createTodo', 
+        {
+          todo: trimmedText, 
+          category: this.$route.params.category ? Number(this.$route.params.category) : 1,
+        })
     },
   },
 }

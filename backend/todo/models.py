@@ -18,6 +18,11 @@ class Todo(models.Model):
 class Category(models.Model):
     category_name = models.CharField(max_length=50, db_index=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    # user = models.ForeignKey('LocalUserInfo', on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
+
+
+class LocalUserInfo(models.Model):
+    user_id = models.CharField(max_length=300, db_index=True, unique=True, primary_key=True)

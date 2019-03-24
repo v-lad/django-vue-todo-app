@@ -14,6 +14,9 @@
 <script>
 import CategoryItem from './CategoryItem.vue'
 export default {
+  async created() {
+    await this.$store.dispatch('getCategories');
+  },
   components: {
     CategoryItem,
   },

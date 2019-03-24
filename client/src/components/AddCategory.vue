@@ -4,8 +4,9 @@
       type="text" 
       class="input-cat"
       v-model="categoryText"
+      @keydown.enter="addCategory"
     >
-    <v-btn round small class="warning" @click="createCategory()" id="del-button">
+    <v-btn round small class="warning" @click="addCategory" id="del-button">
       <v-icon>add</v-icon>
       Add category
     </v-btn>  
@@ -18,7 +19,6 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: "AddCategory",
   computed: {
-    // ...mapGetters(['curId']),
     categoryText: {
       get() {
         return this.$store.getters.categoryText;
@@ -29,17 +29,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['changeCategoryText', 'addCategory']),
-    createCategory() {
+    ...mapActions(['changeCategoryText', 'createCategory']),
+    addCategory() {
       const trimmedCategory = this.categoryText.trim();
-      this.incrementCurId;
       if (trimmedCategory) {
-        this.addCategory({category_name: trimmedCategory, id: this.curId});
+        this.createCategory({category_name: trimmedCategory});
       }
     },
-    incrementCurId() {
-      ++this.curId;
-    }
   }
 }
 </script>

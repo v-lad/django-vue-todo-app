@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Todo, Category
+from .models import Todo, Category, LocalUserInfo
 
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,3 +12,10 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'category_name', 'created_at', 'todos')
+
+
+class LocalUserInfoSerializer(serializers.ModelSerializer):
+    categories = CategorySerializer(many=True, read_only=True)
+    class Meta:
+        model = LocalUserInfo
+        fields = ('user_id', 'categories')
