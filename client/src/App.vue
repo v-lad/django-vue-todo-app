@@ -54,16 +54,10 @@ export default {
       floating: false,
       mini: false
     },
-    // curCat: null,
   }),
-  created() {
-    // console.log(this.$store)
-    // console.log(this.$router)
-    // this.curCat = this.$store.getters.currentCategory;
-  },
   async beforeRouteUpdate(to, from, next) {
     console.log(to.params);
-    await this.$store.dispatch('getTodos', to.params.category ? Number(to.params.category) : 1);
+    await this.$store.dispatch('getTodos', to.params.category ? Number(to.params.category) : 1, this.$route.params);
     next();
   },
   computed: {

@@ -45,7 +45,7 @@ export default {
 
 .input-cat {
   padding: 4px 10px;
-  border: 1px solid $vue-blue;
+  border: 1px solid $vue-white;
   margin: 5px 0;
   width: 100%;
 }

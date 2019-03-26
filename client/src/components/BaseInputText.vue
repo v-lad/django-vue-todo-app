@@ -45,7 +45,7 @@ export default {
 .input {
   width: 80%;
   padding: 8px 10px;
-  border: 1px solid $vue-blue;
+  border: 1px solid $vue-white;
   margin: 20px 10% 20px;
 }
 </style>
