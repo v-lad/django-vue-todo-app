@@ -12,6 +12,8 @@ const store = new Vuex.Store({
     todoText: "",
     categoryText: "",
     currentCategory: null,
+    currentCategoryId: 1,
+    isCategoryActive: null,
   },
   getters: {
     todos: state => state.todos,
@@ -19,6 +21,7 @@ const store = new Vuex.Store({
     todoText: state => state.todoText,
     categoryText: state => state.categoryText,
     currentCategory: state => state.currentCategory,
+    currentCategoryId: state => state.currentCategoryId,
   },
   mutations: {
     addTodo (state, todo) {
@@ -54,6 +57,9 @@ const store = new Vuex.Store({
     setCurrentCategory(state, { category_name }) {
       state.currentCategory = category_name;
     },
+    setCurrentCategoryId (state, currentCatId) {
+      state.currentCategoryId = currentCatId;
+    }
   },
   actions: {
     createTodo ({ commit }, todoData) {
@@ -75,6 +81,7 @@ const store = new Vuex.Store({
           console.log(data)
           commit('setTodos', data);
           commit('setCurrentCategory', data);
+          commit('setCurrentCategoryId', catId)
         })
     },
     deleteTodo({commit}, todoId) {

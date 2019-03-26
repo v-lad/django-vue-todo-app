@@ -28,7 +28,7 @@ export default {
   },
 
   async created() {
-    await this.getTodos(this.$route.params.category ? Number(this.$route.params.category) : 1)
+    await this.getTodos(this.$route.params.category ? Number(this.$route.params.category) : 1, this.$route.params)
   },
 
   computed: {
